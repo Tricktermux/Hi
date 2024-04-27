@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Quiz</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            background-image: linear-gradient(45deg, #ff8a00, #e52e71);
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #quizContainer {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        #questionText {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 8px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        img {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Math Quiz</h2>
+    <div id="quizContainer">
+        <p id="questionText"></p>
+        <input type="text" id="answer" required><br>
+        <button id="submitBtn">Submit</button>
+        <button id="nextBtn" style="display: none;">Next Question</button>
+    </div>
+
+    <audio id="surpriseSound" src="surprise.mp3"></audio>
+    <img id="surpriseImage" src="surprise.jpg" alt="Surprise" style="display: none; width: 300px; height: auto;">
+
+    <script>
+        var questions = [
+            { question: "What is the value of 6 multiplied by 7?", answer: 42 },
+            { question: "If you add 15 to 23, what is the result?", answer: 38 },
+            { question: "What is the square root of 64?", answer: 8 },
+            { question: "If you divide 100 by 5, what is the quotient?", answer: 20 },
+            { question: "What is the sum of 12, 8, and 5?", answer: 25 }
+        ];
+        var currentQuestion = 0;
+
+        function loadQuestion() {
+            document.getElementById('questionText').innerText = questions[currentQuestion].question;
+        }
+
+        function checkAnswer() {
+            var userAnswer = parseInt(document.getElementById('answer').value);
+            if (userAnswer === questions[currentQuestion].answer) {
+                alert('Correct!');
+            } else {
+                alert('Incorrect. The correct answer is ' + questions[currentQuestion].answer);
+                document.getElementById('surpriseImage').style.display = 'block';
+                document.getElementById('surpriseSound').play();
+            }
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+                document.getElementById('submitBtn').style.display = 'block';
+                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('answer').value = '';
+                document.getElementById('surpriseImage').style.display = 'none';
+            } else {
+                alert('Quiz completed!');
+            }
+        }
+
+        document.getElementById('submitBtn').addEventListener('click', checkAnswer);
+        document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+
+        loadQuestion();
+    </script>
+</body>
+</html>
